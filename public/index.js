@@ -23,6 +23,8 @@ chooseHeader.classList.add("hide");
 yourDuoHeader.classList.add("hide");
 compDuoHeader.classList.add("hide");
 
+
+//show the robot info and have a add to duo button
 const makeRobotChoiceCard = (bot) => {
   return `
         <div class="bot-card outline">
@@ -36,6 +38,7 @@ const makeRobotChoiceCard = (bot) => {
     `;
 };
 
+//sho robot info but it is on player side with send back to bots button
 const makeRobotPlayerCard = (bot) => {
   return `
         <div class="bot-card outline">
@@ -49,6 +52,7 @@ const makeRobotPlayerCard = (bot) => {
     `;
 };
 
+//too display the robots only
 const makeRobotDisplayCard = (bot) => {
   return `
         <div class="bot-card outline">
@@ -61,6 +65,7 @@ const makeRobotDisplayCard = (bot) => {
     `;
 };
 
+//show all the robots to be added to team
 const renderChoices = () => {
   choicesDiv.innerHTML = "";
   chooseHeader.classList.remove("hide");
@@ -71,6 +76,7 @@ const renderChoices = () => {
   });
 };
 
+//show the computer's duo 
 const renderCompDuo = () => {
   compDuoDiv.innerHTML = "";
   compDuoHeader.classList.remove("hide");
@@ -81,6 +87,7 @@ const renderCompDuo = () => {
   });
 };
 
+//show players duo
 const renderPlayerDuo = () => {
   playerDuoDiv.innerHTML = "";
   yourDuoHeader.classList.remove("hide");
@@ -91,6 +98,7 @@ const renderPlayerDuo = () => {
   });
 };
 
+//pick a bot
 const chooseBot = (id) => {
   if (playerDuo.length === 2) {
     return alert("You can only choose two bots!");
@@ -105,6 +113,7 @@ const chooseBot = (id) => {
   }
 };
 
+//remove bot from duo
 const putBotBack = (id) => {
   let index = playerDuo.findIndex((bot) => bot.id === id);
   choices.push(playerDuo[index]);
@@ -117,6 +126,7 @@ const putBotBack = (id) => {
   }
 };
 
+//give player choice of 5 randomly selected bots
 const drawFive = () => {
   axios.get("/api/robots/shuffled").then((res) => {
     const shuffledBots = res.data;

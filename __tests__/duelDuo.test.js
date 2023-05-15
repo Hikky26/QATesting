@@ -15,4 +15,14 @@ describe("Duel Duo tests", () => {
     await driver.get("http://localhost:8000");
     await driver.wait(until.titleIs("Duel Duo"), 1000);
   });
+
+  test("", () => {
+
+  });
+  test("", () => {
+
+  });
+  test("", () => {
+
+  });
 });
