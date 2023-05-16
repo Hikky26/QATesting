@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require("express");
 const path = require('path')
 
@@ -13,6 +14,17 @@ const app = express();
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+const { ROLLBAR_ACCESS_TOKEN } = process.env
+var Rollbar = require('rollbar')
+var rollbar = new Rollbar({
+  accessToken: ROLLBAR_ACCESS_TOKEN,
+  captureUncaught: true,
+  captureUnhandledRejections: true,
+})
+
+// record a generic message and send it to Rollbar
+rollbar.log('Hello world!')
 
 // Add up the total health of all the robots
 const calculateTotalHealth = (robots) =>
@@ -42,9 +54,11 @@ const calculateHealthAfterAttack = ({ playerDuo, compDuo }) => {
 app.get("/api/robots", (req, res) => {
   try {
     res.status(200).send(botsArr);
+    rollbar.info('Someone wants to get the robots')
   } catch (error) {
     console.error("ERROR GETTING BOTS", error);
     res.sendStatus(400);
+    rollbar.critical("Can not get robots.")
   }
 });
 
@@ -52,6 +66,7 @@ app.get("/api/robots/shuffled", (req, res) => {
   try {
     let shuffled = shuffle(bots);
     res.status(200).send(shuffled);
+    rollbar.info(`The robots were shuffled`)
   } catch (error) {
     console.error("ERROR GETTING SHUFFLED BOTS", error);
     res.sendStatus(400);
@@ -71,9 +86,11 @@ app.post("/api/duel", (req, res) => {
     if (compHealth > playerHealth) {
       playerRecord.losses += 1;
       res.status(200).send("You lost!");
+      rollbar.info('Player just lost')
     } else {
       playerRecord.losses += 1;
       res.status(200).send("You won!");
+      rollbar.info('Player just won')
     }
   } catch (error) {
     console.log("ERROR DUELING", error);
